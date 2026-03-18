@@ -3,7 +3,7 @@ import sqlite3
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 
-TELEGRAM_TOKEN = "YOUR_TELEGRAM_TOKEN"
+TELEGRAM_TOKEN = "8564300133:AAHxbyiVRazT2qaV-3nbkUlRQDQzeQleIhE"
 
 # ===== DATABASE =====
 def get_links(keyword=None):
