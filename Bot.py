@@ -40,6 +40,31 @@ def add_user(user_id):
     conn.commit()
     conn.close()
 
+async def send_daily_deals_safe(app):
+    import sqlite3
+
+    conn = sqlite3.connect("affiliate.db")
+    c = conn.cursor()
+    c.execute("SELECT user_id FROM users WHERE platform='telegram'")
+    users = [row[0] for row in c.fetchall()]
+    conn.close()
+
+    links = get_links()
+
+    if not links:
+        print("No links found")
+        return
+
+    msg = "📢 Today's Deals:\n\n" + "\n\n".join([f"🛒 {p}\n{u}" for p, u in links])
+
+    for user_id in users:
+        try:
+            await app.bot.send_message(chat_id=user_id, text=msg)
+            print(f"Sent to {user_id}")
+        except Exception as e:
+            print(f"Error sending to {user_id}: {e}")
+
+
 # ===== COMMANDS =====
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_chat.id
